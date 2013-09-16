@@ -1,0 +1,20 @@
+<div class="row">
+  <% if @photo.developed.portrait? %>
+  <div class="span6 offset3 photo-container">
+  <% else %>
+  <div class="span10 offset1 photo-container">
+  <% end %>
+    <img src="<%=@photo.developed.image.url %>">
+    <div class="photo-info">
+      <span><%=@photo.pretty_exposure_time%></span>
+      <span><i>f</i>/<%=@photo.f_stop%></span>
+      <span>ISO <%=@photo.iso %></span>
+      <span style="float:right">
+        <%=@photo.pretty_taken_at%>&nbsp;
+        <a href="<%= url("/photos/#{@photo.id}") %>" class="share facebook" data-display-name="<%=@photo.user.pretty_name%>">
+          <i class="icon-share icon-white"></i>
+        </a>
+      </span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="row">
+  <% if @processing.nonzero? %>
+  <div class="alert alert-info span12">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Processing...</strong> We're fetching your photos from Dropbox and developing them now!
+  </div>
+  <% end %>
+  <div>
+</div>
+  <ul class="thumbnails">
+  <% @photos.each do |photo| %>
+    <li class="span3">
+      <a href="/photos/<%= photo.id %>" class="thumbnail">
+      <img class="photo lazy" src="<%=photo.developed.thumbnail.url %>">
+      </a>
+    </li>
+  <% end %>
+  <% if @processing.nonzero? %>
+    <li class="span3">
+      <a href="/" class="thumbnail">
+        <img src="holder.js/280x280/auto/text:<%=@processing%> more processing...">
+      </a>
+    </li>
+  <% end %>
+  </ul>
