@@ -45,32 +45,7 @@ class User < Sequel::Model
   end
 end
 
-class DevelopedPhoto < Sequel::Model
-  many_to_one :photo
-
-  def image
-    Dragonfly[:images].fetch(path)
-  end
-
-  def image=(img)
-    self.path = Dragonfly[:images].store(img)
-    image.tap do |img|
-      self.height = img.height
-      self.width  = img.width
-    end
-  end
-
-  def thumbnail
-    image.thumb('280x280#')
-  end
-
-  def portrait?
-    height >= width
-  end
-end
-
 class Photo < Sequel::Model
-  one_to_many :developed_photos
   many_to_one :user
 
   state_machine :initial => :unprocessed do
@@ -91,16 +66,32 @@ class Photo < Sequel::Model
     end
   end
 
-  def developed
-    developed_photos.first
-  end
-
   def pretty_exposure_time
     exposure_time.rationalize(0.000001) if exposure_time
   end
 
   def pretty_taken_at
     taken_at.strftime("%-d %b %Y") if taken_at
+  end
+
+  def image
+    Dragonfly[:images].fetch(path)
+  end
+
+  def image=(img)
+    self.path = Dragonfly[:images].store(img)
+    image.tap do |img|
+      self.height = img.height
+      self.width  = img.width
+    end
+  end
+
+  def thumbnail
+    image.thumb('280x280#')
+  end
+
+  def portrait?
+    height >= width
   end
 end
 
@@ -165,12 +156,9 @@ class PhotoDeveloper
     res  = %x(ufraw-batch "#{temp.path}" --output "#{out.path}" --out-type=jpg --auto-crop --lensfun=auto --size=1536 --overwrite)
 
     if $?.success?
-      # Save the processed file
-      developed = photo.add_developed_photo(:image => out)
-      developed.save
-
+      photo.set(meta.to_hash)
+      photo.set(:image => out)
       photo.develop
-      photo.update(meta.to_hash)
     else
       photo.reject
     end

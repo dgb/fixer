@@ -11,7 +11,7 @@
   <% @photos.each do |photo| %>
     <li class="span3">
       <a href="/photos/<%= photo.id %>" class="thumbnail">
-      <img class="photo lazy" src="<%=photo.developed.thumbnail.url %>">
+      <img class="photo lazy" src="<%=photo.thumbnail.url %>">
       </a>
     </li>
   <% end %>

@@ -1,10 +1,10 @@
 <div class="row">
-  <% if @photo.developed.portrait? %>
+  <% if @photo.portrait? %>
   <div class="span6 offset3 photo-container">
   <% else %>
   <div class="span10 offset1 photo-container">
   <% end %>
-    <img src="<%=@photo.developed.image.url %>">
+    <img src="<%=@photo.image.url %>">
     <div class="photo-info">
       <span><%=@photo.pretty_exposure_time%></span>
       <span><i>f</i>/<%=@photo.f_stop%></span>
