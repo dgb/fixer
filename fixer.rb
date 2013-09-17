@@ -79,6 +79,7 @@ class Photo < Sequel::Model
   end
 
   def image=(img)
+    Dragonfly[:images].destroy(path) if path
     self.path = Dragonfly[:images].store(img)
     image.tap do |img|
       self.height = img.height
@@ -159,6 +160,7 @@ class PhotoDeveloper
       photo.set(meta.to_hash)
       photo.set(:image => out)
       photo.develop
+      photo.save # state_machine doesn't always trigger a save?
     else
       photo.reject
     end
