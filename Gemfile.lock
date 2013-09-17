@@ -15,7 +15,6 @@ GEM
       multi_json
       oauth
     excon (0.25.3)
-    exiv2 (0.0.8)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     fog (1.15.0)
@@ -108,7 +107,6 @@ PLATFORMS
 DEPENDENCIES
   dragonfly
   dropbox-api
-  exiv2
   fog
   foreman
   omniauth

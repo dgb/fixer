@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'dragonfly'
 gem 'dropbox-api'
-gem 'exiv2'
 gem 'fog'
 gem 'omniauth'
 gem 'omniauth-facebook'

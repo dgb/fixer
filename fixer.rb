@@ -108,9 +108,9 @@ end
 
 class Metadata
   def self.open(path)
-    img = Exiv2::ImageFactory.open(path)
-    img.read_metadata
-    new(img.exif_data)
+    str = `exiv2 -Pkv pr "#{path}"`
+    exif = str.scan(/([\w\.]+)\s+(.+)/)
+    new(Hash[exif])
   end
 
   def initialize(exif)
