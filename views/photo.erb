@@ -1,3 +1,10 @@
+<% content_for :meta do %>
+<meta property="og:title" content="<%=@photo.user.pretty_name%>'s photo">
+<meta property="og:description" content="Photo taken by <%=@photo.user.pretty_name%> on <%= @photo.pretty_taken_at %> at <%= @photo.f_stop %>, <%= @photo.pretty_exposure_time %>">
+<meta property="og:url" content="<%=request.url%>">
+<meta property="og:image" content="<%=url(@photo.image.thumb('1200x630#').url)%>">
+<meta property="fb:app_id" content="<%=facebook_app_id%>">
+<% end %>
 <div class="row">
   <% if @photo.portrait? %>
   <div class="span6 offset3 photo-container">

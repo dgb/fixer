@@ -174,7 +174,7 @@ end
 
 Dragonfly[:images].configure_with(:imagemagick) do |c|
   c.url_format = '/media/:job'
-  #c.url_host = 'media.fixerapp.com'# if ENV['RACK_ENV'] == 'production'
+  c.url_host = ENV['MEDIA_HOST'] if ENV['RACK_ENV'] == 'production'
   c.datastore = Dragonfly::DataStorage::S3DataStore.new(
     :bucket_name => ENV['AWS_BUCKET'],
     :access_key_id => ENV['AWS_ID'],
@@ -233,6 +233,5 @@ end
 
 get '/photos/:id' do
   @photo = Photo[params[:id]]
-  # halt 403 unless @photo.visible_to?(current_user)
   erb :photo
 end

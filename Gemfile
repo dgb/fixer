@@ -12,6 +12,7 @@ gem 'redis'
 gem 'sequel'
 gem 'sidekiq'
 gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'state_machine'
 
 group :development do
