@@ -101,6 +101,9 @@ end
 class Metadata
   def self.open(path)
     str = `exiv2 -Pkv pr "#{path}"`
+  end
+
+  def self.from_str(str)
     exif = str.scan(/([\w\.]+)\s+(.+)/)
     new(Hash[exif])
   end
@@ -114,24 +117,28 @@ class Metadata
   end
 
   def exposure_time
-    Rational(@exif['Exif.Photo.ExposureTime']).to_f
+    fetch_float 'Exif.Photo.ExposureTime'
   end
 
   def f_stop
-    Rational(@exif['Exif.Photo.FNumber']).to_f
+    fetch_float 'Exif.Photo.FNumber'
   end
 
   def taken_at
-    DateTime.strptime(@exif['Exif.Photo.DateTimeDigitized'], '%Y:%m:%d %H:%M:%S')
+    DateTime.strptime(@exif['Exif.Photo.DateTimeDigitized'], '%Y:%m:%d %H:%M:%S') if @exif['Exif.Photo.DateTimeDigitized']
   end
 
   def focal_length
-    Rational(@exif['Exif.Photo.FocalLengthIn35mmFilm']).to_f
+    fetch_float 'Exif.Photo.FocalLengthIn35mmFilm'
   end
 
   def to_hash
     attrs = [:iso, :exposure_time, :f_stop, :taken_at, :focal_length].map { |a| [a, self.send(a)] }
     Hash[attrs]
+  end
+
+  def fetch_float(key)
+    Rational(@exif[key]).to_f if @exif[key]
   end
 end
 
